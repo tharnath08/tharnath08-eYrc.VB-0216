@@ -22,7 +22,11 @@ function refreshContent(){
     container._leaflet_id = null;
     }
         
-    var map = L.map('map').setView([20.5937, 78.9629], 4);
+    var map = L.map('map', {
+        minZoom: 4,
+        maxZoom: 4,
+        zoomControl: false
+    }).setView([20.5937, 78.9629], 4);
     var jsonDataObject =[];
     
     $.getJSON('https://spreadsheets.google.com/feeds/list/1_j9h71_lqMXyY-bp8dA_lWZCewWWzuvgPTXJGrJ_7I8/5/public/full?alt=json', function(data) {
@@ -45,7 +49,7 @@ function refreshContent(){
                 }
             }
             $('#Received').html(length);
-            $('#Dispatched').html(dispatched);
+            $('#Dispatched').html(dispatched-shipped);
             $('#Shipped').html(shipped);
             $('#Pending').html(length-dispatched);
 
@@ -53,20 +57,31 @@ function refreshContent(){
                 var myData_map, myData_order;
 
                 trHTML += '<tr><td>' + data.feed.entry[i].gsx$orderid.$t + 
+                          '</td><td>'  + data.feed.entry[i].gsx$orderdateandtime.$t +
                           '</td><td>' + data.feed.entry[i].gsx$item.$t + 
-                          '</td><td>' + data.feed.entry[i].gsx$priority.$t + 
-                          '</td><td>' + data.feed.entry[i].gsx$quantity.$t + 
-                          '</td><td>'  + data.feed.entry[i].gsx$city.$t + 
-                          '</td><td>'  + data.feed.entry[i].gsx$longitude.$t +
-                          '</td><td>'  + data.feed.entry[i].gsx$latitude.$t + 
-                          '</td><td>' + data.feed.entry[i].gsx$orderdispatched.$t + 
-                          '</td><td>' + data.feed.entry[i].gsx$ordershipped.$t + 
-                          '</td><td>' + data.feed.entry[i].gsx$dispatchtime.$t + 
-                          '</td><td>'  + data.feed.entry[i].gsx$ordertime.$t + 
-                          '</td><td>' + data.feed.entry[i].gsx$shippingtime.$t + 
-                          '</td><td>' + data.feed.entry[i].gsx$timetaken.$t + 
+                          '</td><td>' + data.feed.entry[i].gsx$priority.$t +  
+                          '</td><td>'  + data.feed.entry[i].gsx$city.$t +  
+                          '</td><td>' + ((data.feed.entry[i].gsx$orderdispatched.$t == "Yes") ? 'Yes' : 'No') + 
+                          '</td><td>' + ((data.feed.entry[i].gsx$ordershipped.$t == "Yes") ? 'Yes' : 'No') + 
+                          '</td><td>' + ((data.feed.entry[i].gsx$dispatchtime.$t != "") ? data.feed.entry[i].gsx$dispatchtime.$t : '-')+ 
+                          '</td><td>' + ((data.feed.entry[i].gsx$shippingtime.$t != "") ? data.feed.entry[i].gsx$shippingtime.$t : '-') + 
+                          '</td><td>' + ((data.feed.entry[i].gsx$timetaken.$t != "") ? data.feed.entry[i].gsx$timetaken.$t : '-') + 
                           '</td></tr>';
 
+            }
+
+            for(var i = 0; i < (9-data.feed.entry.length); ++i){
+                trHTML += '<tr><td>' + "" +
+                          '</td><td>' + "" +
+                          '</td><td>' + "" +
+                          '</td><td>' + "" +
+                          '</td><td>' + "" +
+                          '</td><td>' + "" +
+                          '</td><td>' + "" +
+                          '</td><td>' + "" +
+                          '</td><td>' + "" +
+                          '</td><td>' + "" +
+                          '</td></tr>';
             }
 
             $('#tableContent').html(trHTML);
