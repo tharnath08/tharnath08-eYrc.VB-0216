@@ -25,13 +25,17 @@
 
     </head>
   <body>
+
+    <nav class="navbar navbar-light bg-light" style="height:6vh;">
+        <div id="eyantraLogo">
+                
+            <img src="https://eyic.e-yantra.org/img/eYantra_logo_whitetext.png" alt="e_yantra_logo" width="150" height="30"><br>
+        </div>
+    </nav>
     
 
     <div style="width: 90%; position: absolute; left:5%;">
-            <div id="eyantraLogo" style="height:6vh">
-                
-                <img src="https://eyic.e-yantra.org/img/eYantra_logo_whitetext.png" alt="e_yantra_logo" width="100" height="40"><br>
-            </div>
+            
         
 
 
@@ -41,58 +45,59 @@
             <div class="col-xl-4">
 
 
-                <div class="row" style="height: 50%;">
-                    <div class="col-xl-12" style="height: 100%;">
-                        <div class="border-primary mb-5 shadow" style="height: 100%;">
-                            <div class="card mb-4" style="height: 100%;">
-                                    <div id="map" style="height: 100%"></div>
-                            </div>
+                <div class="row" style="height: 47vh;">
+                    <div class="col-xl-12 col-md-6" style="height:100%;">
+                        <div class="border-primary rounded mb-5 shadow">
+                            <div id="map" style="height: 100%"></div>
                         </div>
-                    </div>
+                    </div>              
                 </div>
 
+                
 
-                <div class="row" style="height: 50%;">
+
+                <div class="row" style="height: 47vh;">
+
                     <div class="col-xl-12">
-
-                        <div class="card border-left-primary shadow h-100 py-2">
+                        <div class="card border-primary mb-4 shadow h-100 py-2">
                             <div id="column_chart" style="width: 100%; height: 100%;"></div>
-                        </div>
-                            
+                        </div>                            
                     </div>
+
                 </div>
 
 
             </div>
 
 
-            <div class="col-xl-8" style="height: 24%;">
+            <div class="col-xl-8">
 
 
                 <div class="row">
 
-                    <div class="col-xl-3 col-md-6">
+                    <div class="col-xl-3 col-md-6" style="height:100%;">
                         <div class="border-primary rounded mb-5 shadow" style="border-left: 5px solid blue;">
                             <div class="font-weight-bold card-header text-primary">ORDERS RECEIVED</div>
                             <div class="font-weight-bold card-body text-primary" id="Received">0</div>
                         </div>
                     </div>
+                    
 
-                    <div class="col-xl-3">
+                    <div class="col-xl-3 col-md-6" style="height:100%;">
                         <div class="border-warning rounded mb-5 shadow" style="border-left: 5px solid yellow">
                             <div class="font-weight-bold card-header text-warning">ORDERS DISPATCHED</div>
                             <div class="font-weight-bold card-body text-warning" id="Dispatched">0</div> 
                         </div>
                     </div>
 
-                    <div class="col-xl-3">
+                    <div class="col-xl-3 col-md-6" style="height:100%;">
                         <div class="border-success rounded mb-5 shadow" style="border-left: 5px solid rgb(36, 128, 0)">
                         <div class="font-weight-bold card-header text-success">ORDERS SHIPPED</div>
                         <div class="font-weight-bold card-body text-success" id="Shipped">0</div>
                         </div>
                     </div>
 
-                    <div class="col-xl-3">
+                    <div class="col-xl-3 col-md-6" style="height:100%;">
                         <div class="border-danger rounded mb-5 shadow" style="border-left: 5px solid red">
                             <div class="font-weight-bold card-header text-danger">ORDERS PENDING</div>
                             <div class="font-weight-bold card-body text-danger" id="Pending">0</div>
@@ -102,14 +107,11 @@
                 </div>
 
 
-                <div class="row" style="height: 60%;">
+                <div class="row" >
                     <div class="col-xl-12">
                         <div class="border-primary mb-5 shadow">
                         <div class="card mb-4" >
-                            <div class="card-header">       
-                                DataTable Example
-                            </div>
-                                <table class="table table-striped" style="height: 90%">
+                                <table class="table table-striped table-sm" style="font-size: small;">
                                     <thead>
                                         <tr>
                                             <th scope="col">Order ID </th>
