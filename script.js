@@ -1,3 +1,6 @@
+
+google.charts.load("current", {packages:['corechart']});
+google.charts.setOnLoadCallback(refreshChart);
 var container = L.DomUtil.get('map');
 
 if(container != null){
@@ -6,6 +9,16 @@ container._leaflet_id = null;
 
 
 var tr = '';
+
+
+
+var jsonDataChart =[];
+var json_chart = {
+    "OderID" : "",
+    "TimeTaken": 0,
+    "Priority": ""
+    };  
+jsonDataChart.push(json_chart);
 
 for(var i = 0; i < 9; ++i){
     tr += '<tr><td>' + "" +
@@ -20,10 +33,6 @@ for(var i = 0; i < 9; ++i){
                 '</td><td>' + "" +
                 '</td></tr>';
 }
-
-google.charts.load("current", {packages:['corechart']});
-google.charts.setOnLoadCallback(refreshMap);
-
 
 var map = L.map('map',{
         minZoom: 4,
@@ -47,11 +56,11 @@ $(document).ready(function() {
     // Fetch every 5 second
     setInterval(Json, 1000);
     setInterval(refreshMap, 2000);
+    setInterval(refreshChart, 2500);
 });
 
 var jsonDataObject =[];
 function Json(){
-        
     jsonDataObject =[];
     $.getJSON('https://spreadsheets.google.com/feeds/list/1_j9h71_lqMXyY-bp8dA_lWZCewWWzuvgPTXJGrJ_7I8/5/public/full?alt=json', function(data) {
 
@@ -121,6 +130,15 @@ function Json(){
 
         $('#tableContent').html(trHTML);
         var trHTML = '';
+        jsonDataChart=[];
+        for (var i = 0; i < data.feed.entry.length; ++i) {
+            var json_chart = {
+              "OderID" : data.feed.entry[i].gsx$orderid.$t,
+              "TimeTaken": parseFloat(data.feed.entry[i].gsx$timetaken.$t),
+              "Priority": data.feed.entry[i].gsx$priority.$t
+              };  
+            jsonDataChart.push(json_chart);
+        };
 
     });
 }
@@ -142,6 +160,7 @@ function refreshMap(){
             attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
         }).addTo(map); 
 
+        
         for (var j = 0; j < jsonDataObject.length; j++) {
             var color = 'red'
 
@@ -178,8 +197,42 @@ function refreshMap(){
                     .openOn(map);
                 }                      
 
-            }
-
-            
-   
+            }   
 }
+
+function refreshChart(){
+    console.log(jsonDataChart);
+    
+    var graph_arr = [['Order ID', 'Time Taken', { role: 'style' }]];
+    var bar_color = [];
+      // Setting color for the coloumns of graph according to priority of items
+      for(var j in jsonDataChart){
+        if(jsonDataChart[j].Priority == 'HP'){
+          var color =  '#FF0000';
+          }
+        else if(jsonDataChart[j].Priority == 'MP'){
+          var color =  '#FFFF00';
+          }
+        else if(jsonDataChart[j].Priority == 'LP'){
+          var color =  '#00FF00';
+          }
+        bar_color.push(color)
+      }
+
+      // Converting Json Object to JavaScript Array
+      for(var j in jsonDataChart){
+          graph_arr.push([jsonDataChart[j].OderID,jsonDataChart[j].TimeTaken, bar_color[j]]);
+      }
+      var graphArray_Final = google.visualization.arrayToDataTable(graph_arr);
+    
+      var data = new google.visualization.DataView(graphArray_Final); 
+
+      var options = {
+        title: 'Time Taken for items to be Shipped',
+        hAxis: { title: 'Order ID'},
+        vAxis: { title: 'Time Taken (s)'},
+        legend: { position: "none" },
+      };
+      var chart = new google.visualization.ColumnChart(document.getElementById('column_chart'));
+      chart.draw(data, options);	 
+  }
